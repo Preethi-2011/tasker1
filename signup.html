@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./stylr.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="whole">
+      <div class="card-box">
+        <div class="cards">
+          <h1>Sign-Up</h1>
+          <form action="#" id="act">
+            <div class="input-group">
+              <label>Name</label>
+              <input type="text" placeholder="name" id="name" />
+              <div id="error"></div>
+            </div>
+            <div class="input-group">
+              <label>Email</label>
+              <input type="text" placeholder="email" id="email" />
+              <div id="emailerror"></div>
+            </div>
+            <div class="input-group">
+              <label>Password</label>
+              <input type="password" placeholder="password" id="password" />
+              <div id="passworderror"></div>
+            </div>
+            <div class="input-group">
+              <button class="sign">Sign-up</button>
+              <p>Already have an account?<span style="color:blueviolet;"><a href="./first.html">Sign Up</a></span></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      // parse->string to object
+      // stringfy->object to string
+      var form = document.getElementById("act");
+      form.addEventListener("submit", function (e)  { //(e) form function
+        e.preventDefault();
+        Signup()
+      });
+
+      var nameInput = document.getElementById("name");
+      var emailInput = document.getElementById("email");
+      var passwordInput = document.getElementById("password");
+
+      function Signup() {
+        var nameTruth = false;
+        var emailTruth = false;
+        var passTruth = false;
+        var nameVal = nameInput.value;
+        var emailVal = emailInput.value;
+        var passwordVal = passwordInput.value;
+
+        if (nameVal == "") {
+          const errorEl = document.getElementById("error");
+          errorEl.innerHTML = "*Name required";
+          errorEl.style.color = "red";
+          nameInput.classList.add("error");
+        } else {
+          const errorEl = document.getElementById("error");
+          errorEl.innerText = "";
+          nameInput.classList.remove("error");
+          nameTruth = true
+        }
+
+        if (emailVal == "") {
+          const errorEle = document.getElementById("emailerror");
+          errorEle.innerHTML = "*Email required";
+          errorEle.style.color = "red";
+          emailInput.classList.add("error");
+        } else if (!emailVal.includes("@gmail.com")) {
+          const errorEle = document.getElementById("emailerror");
+          errorEle.innerHTML = "*Valid email required";
+          errorEle.style.color = "red";
+          emailInput.classList.add("error");
+        } else {
+          const errorEle = document.getElementById("emailerror");
+          errorEle.innerHTML = "";
+          emailInput.classList.remove("error");
+          emailTruth = true
+        }
+
+        if (
+          passwordVal == "" ||
+          passwordVal.length < 4 ||
+          !validatePass(passwordVal)
+        ) {
+          // console.log(passwordVal);
+          const errorElem = document.getElementById("passworderror");
+          errorElem.innerText = "Password required";
+          errorElem.style.color = "red";
+          passwordInput.classList.add("error");
+        } else {
+          const errorElem = document.getElementById("passworderror");
+          errorElem.innerText = "";
+          passwordInput.classList.remove("error");
+          passTruth = true
+        }
+
+        if (emailTruth && passTruth && nameTruth) {
+          //   let user_records = new Array();
+          let user_records = JSON.parse(localStorage.getItem("users"))
+            ? JSON.parse(localStorage.getItem("users"))
+            : [];
+          if (user_records.some((user) => user.email == emailVal)) {
+            alert("Already have an account");
+          } else {
+            user_records.push({
+              name: nameVal,
+              email: emailVal,
+              password: passwordVal,
+            });
+            localStorage.setItem("users", JSON.stringify(user_records));
+            window.location.href = "./first.html";
+          }
+        }
+
+      }
+
+      // function setError(element, message) {
+      //   const inputGroup = element.nextElementSibling;
+
+      //   const errorEl = inputGroup.querySelector(".error");
+      //   errorEl.innerText = message;
+      //   errorEl.style.color = "red";
+      //   inputGroup.classList.add("error")
+      // }
+      // function setSuccess(element) {
+
+      //   const inputGroup = element.nextElementSibling;
+      //    const errorEl = inputGroup.querySelector(".error");
+      //    errorEl.innerText = ""
+      //   element.classList.remove("error");
+      // }
+      function validatePass(passPat) {
+        const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/;
+
+        return passPattern.test(passPat);
+      }
+    </script>
+  </body>
+</html>

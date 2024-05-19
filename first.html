@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./stylr.css">
+</head>
+<body>
+    <div class="whole-contain">
+        <div class="card">
+            <div class="to-doli">
+                <img src="./to do.png" alt="todo" class="todo">
+            </div>
+            <div class="forms">
+                <div class="forms-in">
+                    <form action="" id="form">
+                <h1>Welcome to Tasker</h1>
+                <p style="color:gray">Please emter tour information to access your task</p>  
+                    <div class="input-group" id="ingro">
+                    <label for="Email">Email</label>
+                    <input type="email" id="email">
+                    <div class="error"></div>
+                </div>
+                <div class="input-group">
+                    <label for="Password" style=" margin-top: 10px;">Password</label>
+                    <input type="password" id="password">
+                    <div class="error"></div>
+                    </div>
+                    
+                    <div class="check">
+                    <input type="checkbox" class="checkbox"><label for="">Remember me</label>
+                    </div>
+                    </div>
+                    <button class="sign-in" type="submit" onclick="sign()">Sign In</button>
+                    <p>Don't have an account?<span style="color:blueviolet;"><a href="./signup.html">Sign Up</a></span></p>
+                </form>
+                </div>
+            </div>
+</div>
+<script>
+     var form=document.getElementById("form");
+     form.addEventListener('submit',function(e)
+    {
+        e.preventDefault();
+        sign()
+    })
+    
+    function sign(){
+        var success=false;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        let retrieve = JSON.parse(localStorage.getItem("users"));
+        if(retrieve.some((user) => user.email == email && user.password == password))
+        {
+           alert("Login successful")
+           success=true;
+        }
+        else{
+            alert("Login failed");
+        }
+       if(success)
+    {
+        window.location.href="./index2.html"
+    } 
+    }
+   
+    
+</script>
+</body>
+</html>
